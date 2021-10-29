@@ -1,5 +1,6 @@
 import com.binod.DrollsKnowledgeBase.User
 import com.binod.DrollsKnowledgeBase.CompartimentType
+import com.binod.DrollsKnowledgeBase.Apartament
 
 rule "Buget too low for D Type Apartment"
 	when 
@@ -29,3 +30,11 @@ rule "Buget too low for OP Type Apartment"
 		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
 	end
 
+rule "Find cheapest apartament in Area for Specified Compartiment Type"
+    when
+        user: User()
+        findedAp: Apartament(_compartimentType == user.get_chosenCompartiment()) from user.get_chosenCityZone().get_apartments()
+        minimumPriceAp: min(findedAp.get_price())
+    then
+        System.out.println("Best apartament in the budget : " + minimumPriceAp.toString());
+    end

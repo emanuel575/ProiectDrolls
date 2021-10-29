@@ -1,11 +1,22 @@
 package com.binod.DrollsKnowledgeBase;
 
+import java.util.List;
 import java.util.Objects;
 
 public class CityZone {
     private String _zoneName;
     private double _annualGrowthPercent;
     private double _zoneMedianPricePerSquareMeters;
+    private List<Apartament> _apartments;
+
+    public List<Apartament> get_apartments() {
+        return _apartments;
+    }
+
+    public void set_apartments(List<Apartament> _apartments) {
+        this._apartments = _apartments;
+    }
+
 
     public CityZone(String _zoneName, double _annualGrowthPercent, double _zoneMedianPricePerSquareMeters) {
         this._zoneName = _zoneName;

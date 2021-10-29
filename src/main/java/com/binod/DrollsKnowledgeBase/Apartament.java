@@ -8,6 +8,13 @@ public class Apartament {
     private CompartimentType _compartimentType;
     private Double _area;
 
+    public Apartament(ApartamentType _apartmentType, Double _price, CompartimentType _compartimentType, Double _area) {
+        this._apartmentType = _apartmentType;
+        this._price = _price;
+        this._compartimentType = _compartimentType;
+        this._area = _area;
+    }
+
     public ApartamentType get_apartmentType() {
         return _apartmentType;
     }

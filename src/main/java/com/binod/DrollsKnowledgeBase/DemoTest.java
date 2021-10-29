@@ -31,6 +31,14 @@ public class DemoTest {
             CityZone BucurestiHillZone = new CityZone("BucurestiHillZone",15.0,1800);
             CityZone BucurestiLimit = new CityZone("BucurestiLimit",15.0,1400);
 
+            //### apartaments creator
+
+            List<Apartament> IasiCenterApartaments = new ArrayList<Apartament>();
+            IasiCenterApartaments.add(new Apartament(ApartamentType.ONE_ROOM,50000.,CompartimentType.D,30.));
+            IasiCenterApartaments.add(new Apartament(ApartamentType.TWO_ROOMS,560000.,CompartimentType.D,50.));
+            IasiCenterApartaments.add(new Apartament(ApartamentType.TREE_ROOMS,75000.,CompartimentType.D,70.));
+
+            IasiCenter.set_apartments(IasiCenterApartaments);
 
             User client = new User();
             client.set_chosenCity(Iasi);

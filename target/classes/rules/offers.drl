@@ -1,47 +1,40 @@
 import com.binod.DrollsKnowledgeBase.User
 import com.binod.DrollsKnowledgeBase.CompartimentType
+import com.binod.DrollsKnowledgeBase.Apartament
 
 rule "Buget too low for D Type Apartment"
 	when 
 		user: User( (_chosenCompartiment == CompartimentType.D) && (_maxBuget < _apartamentArea * _chosenCityZone.get_zoneMedianPricePerSquareMeters()))
 	then
-		System.out.println("Buget is too low for D Type Apartament in Selected Zone"+ user.get_chosenCityZone().get_zoneName());
+		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
 	end
 
 rule "Buget too low for SD Type Apartment"
 	when
 		user: User( (_chosenCompartiment == CompartimentType.SD) && (_maxBuget < _apartamentArea * _chosenCityZone.get_zoneMedianPricePerSquareMeters()))
 	then
-		System.out.println("Buget is too low");
+		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
 	end
 
 rule "Buget too low for ND Type Apartment"
 	when
 		user: User( (_chosenCompartiment == CompartimentType.ND) && (_maxBuget < _apartamentArea * _chosenCityZone.get_zoneMedianPricePerSquareMeters()))
 	then
-		System.out.println("Buget is too low");
+		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
 	end
 
 rule "Buget too low for OP Type Apartment"
 	when
 		user: User( (_chosenCompartiment == CompartimentType.OP) && (_maxBuget < _apartamentArea * _chosenCityZone.get_zoneMedianPricePerSquareMeters()))
 	then
-		System.out.println("Buget is too low");
+		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
 	end
 
-
-
-//rule "Offer for PhonePe"
-//	when
-//		offerObject: PaymentOffer(channel=="phonepe")
-//	then
-//		offerObject.setDiscount(20);
-//	end
-//
-//rule "Offer for GooglePay"
-//	when
-//		offerObject: PaymentOffer(channel=="googlepay")
-//	then
-//		offerObject.setDiscount(25);
-//	end
-//
+rule "Find cheapest apartament in Area for Specified Compartiment Type"
+    when
+        user: User()
+        findedAp: Apartament(_compartimentType == user.get_chosenCompartiment()) from user.get_chosenCityZone().get_apartments()
+        minimumPriceAp: min(findedAp.get_price())
+    then
+        System.out.println("Best apartament in the budget : " + minimumPriceAp.toString());
+    end
