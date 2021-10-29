@@ -7,10 +7,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="DrollsKnowledgeBase" />
+        <module name="DroolsKieSession" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="DroolsKieSession" target="11.0" />
-    </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,27 +1,31 @@
-import com.binod.DrollsKnowledgeBase.PaymentOffer
+import com.binod.DrollsKnowledgeBase.User
+import com.binod.DrollsKnowledgeBase.CompartimentType
 
-rule "Offer for Paytm"
+rule "Buget too low for D Type Apartment"
 	when 
-		offerObject: PaymentOffer(channel=="paytm")
+		user: User( (_chosenCompartiment == CompartimentType.D) && (_maxBuget < _apartamentArea * _chosenCityZone.get_zoneMedianPricePerSquareMeters()))
 	then
-		offerObject.setDiscount(17);
-		System.out.println("Offer only for PayTm");
+		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
 	end
 
-rule "Offer for PhonePe"
-	when 
-		offerObject: PaymentOffer(channel=="phonepe")
+rule "Buget too low for SD Type Apartment"
+	when
+		user: User( (_chosenCompartiment == CompartimentType.SD) && (_maxBuget < _apartamentArea * _chosenCityZone.get_zoneMedianPricePerSquareMeters()))
 	then
-		offerObject.setDiscount(20);
+		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
 	end
 
-rule "Offer for GooglePay"
-	when 
-		offerObject: PaymentOffer(channel=="googlepay")
+rule "Buget too low for ND Type Apartment"
+	when
+		user: User( (_chosenCompartiment == CompartimentType.ND) && (_maxBuget < _apartamentArea * _chosenCityZone.get_zoneMedianPricePerSquareMeters()))
 	then
-		offerObject.setDiscount(25);
+		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
 	end
-	
-	
-	 
+
+rule "Buget too low for OP Type Apartment"
+	when
+		user: User( (_chosenCompartiment == CompartimentType.OP) && (_maxBuget < _apartamentArea * _chosenCityZone.get_zoneMedianPricePerSquareMeters()))
+	then
+		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
+	end
 
