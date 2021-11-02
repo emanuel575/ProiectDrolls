@@ -54,7 +54,7 @@ public class DemoTest {
             User client = new User();
             client.set_chosenCity(Iasi);
             client.set_chosenCityZone(IasiCenter);
-            client.set_maxBuget(56000.);
+            client.set_maxBuget(68000.);
             client.set_chosenCompartiment(CompartimentType.D);
             client.set_apartamentArea(70.0);
             client.set_chosenApartamentType(ApartamentType.PENTHOUSE);

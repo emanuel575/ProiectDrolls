@@ -85,4 +85,11 @@ public class User {
     public void set_chosenCityZone(CityZone _chosenCityZone) {
         this._chosenCityZone = _chosenCityZone;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "_UniqueName='" + _UniqueName + '\'' +
+                '}';
+    }
 }

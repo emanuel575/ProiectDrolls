@@ -8,6 +8,16 @@ public class Apartament {
     private CompartimentType _compartimentType;
     private Double _area;
 
+    public Boolean get_withFurniture() {
+        return _withFurniture;
+    }
+
+    public void set_withFurniture(Boolean _withFurniture) {
+        this._withFurniture = _withFurniture;
+    }
+
+    private Boolean _withFurniture;
+
     public Boolean get_isFinished() {
         return _isFinished;
     }
@@ -24,6 +34,7 @@ public class Apartament {
         this._compartimentType = _compartimentType;
         this._area = _area;
         this._isFinished = true;
+        this._withFurniture = true;
     }
 
     public Apartament(ApartamentType _apartmentType, Double _price, CompartimentType _compartimentType, Double _area, Boolean _isFinished) {
@@ -32,6 +43,7 @@ public class Apartament {
         this._compartimentType = _compartimentType;
         this._area = _area;
         this._isFinished = _isFinished;
+        this._withFurniture = true;
     }
 
     public ApartamentType get_apartmentType() {

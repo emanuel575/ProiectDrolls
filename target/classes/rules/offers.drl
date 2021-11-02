@@ -128,14 +128,68 @@ rule "If user pays with credit, interest rate is included in apartment price"
     end
 
 //Rule #14
-rule "Chosen zone is too expensive, choose next zone and show apartments"
+//rule "Chosen zone is too expensive, choose next zone and show apartments"
+//    when
+//        user: User(_maxBuget < _chosenCityZone._zoneMedianPricePerSquareMeters * _apartamentArea)
+//    then
+//        CityZone chosenCityZone = user.get_chosenCityZone();
+//        System.out.println("Chosen city zone : " + chosenCityZone.toString());
+//        int indexOfCityZone =  user.get_chosenCity().get_cityZones().indexOf(chosenCityZone);
+//        user.set_chosenCityZone(user.get_chosenCity().get_cityZones().get(++indexOfCityZone));
+//        System.out.println("New city zone : " + user.get_chosenCityZone().toString());
+//    end
+
+//Rule #15
+rule "Set User name if is null"
     when
-        user: User(_maxBuget < _chosenCityZone._zoneMedianPricePerSquareMeters * _apartamentArea)
+        user: User(_UniqueName == null)
     then
-        CityZone chosenCityZone = user.get_chosenCityZone();
-        System.out.println("Chosen city zone : " + chosenCityZone.toString());
-        int indexOfCityZone =  user.get_chosenCity().get_cityZones().indexOf(chosenCityZone);
-        System.out.println("index " + indexOfCityZone);
-        user.set_chosenCityZone(user.get_chosenCity().get_cityZones().get(++indexOfCityZone));
-        System.out.println("New city zone : " + user.get_chosenCityZone().toString());
+        user.set_UniqueName("Default UserName");
+        System.out.println("User is : " + user.toString());
+    end
+
+//Rule #16
+rule "Apartment with furniture is 20% more expensive"
+    when
+        user: User()
+        findedApartments: Apartament(_withFurniture == true) from user._chosenCityZone.get_apartments()
+    then
+        findedApartments.set_price(findedApartments.get_price() + findedApartments.get_price()*0.2);
+        System.out.println("Full price for furniture apartment is : " + findedApartments.toString());
+    end
+
+//Rule #17
+rule "Compartiment type chosen too expensive"
+    when
+        user: User(_chosenApartamentType != ApartamentType.ONE_ROOM)
+        findedApartment: Apartament(_compartimentType == user._chosenCompartiment && user._maxBuget < _price) from user._chosenCityZone.get_apartments()
+    then
+        ApartamentType currentCompType = user.get_chosenApartamentType();
+        System.out.println(currentCompType.getValue()-1);
+    end
+
+//Rule #18
+rule "If credit, show down payment"
+    when
+        user: User(_chosenPaymentType == PaymentType.CREDIT)
+        findedApartment: Apartament() from user._chosenCityZone.get_apartments()
+    then
+         System.out.println("Down Payment for : " + findedApartment.toString() + " is : " + (0.25*findedApartment.get_price()));
+    end
+
+//Rule #19
+rule "Change payment Type to Cash"
+    when
+        user: User()
+    then
+        user.set_chosenPaymentType(PaymentType.CASH);
+    end
+
+//Rule #20
+rule "Modified apartments from finished to not finished"
+    when
+        user: User()
+        apartment: Apartament() from user._chosenCityZone.get_apartments()
+    then
+        apartment.set_isFinished(false);
     end
