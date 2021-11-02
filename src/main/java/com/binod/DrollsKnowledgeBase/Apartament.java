@@ -8,11 +8,30 @@ public class Apartament {
     private CompartimentType _compartimentType;
     private Double _area;
 
+    public Boolean get_isFinished() {
+        return _isFinished;
+    }
+
+    public void set_isFinished(Boolean _isFinished) {
+        this._isFinished = _isFinished;
+    }
+
+    private Boolean _isFinished;
+
     public Apartament(ApartamentType _apartmentType, Double _price, CompartimentType _compartimentType, Double _area) {
         this._apartmentType = _apartmentType;
         this._price = _price;
         this._compartimentType = _compartimentType;
         this._area = _area;
+        this._isFinished = true;
+    }
+
+    public Apartament(ApartamentType _apartmentType, Double _price, CompartimentType _compartimentType, Double _area, Boolean _isFinished) {
+        this._apartmentType = _apartmentType;
+        this._price = _price;
+        this._compartimentType = _compartimentType;
+        this._area = _area;
+        this._isFinished = _isFinished;
     }
 
     public ApartamentType get_apartmentType() {

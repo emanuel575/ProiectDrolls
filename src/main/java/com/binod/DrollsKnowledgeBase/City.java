@@ -1,5 +1,6 @@
 package com.binod.DrollsKnowledgeBase;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -7,9 +8,16 @@ public class City {
     private String _cityName;
     private Double _annualGrowth;
 
+    public List<CityZone> get_cityZones() {
+        return _cityZones;
+    }
+
+    private List<CityZone> _cityZones;
+
     public City(String _cityName, Double _annualGrowth) {
         this._cityName = _cityName;
         this._annualGrowth = _annualGrowth;
+        this._cityZones = new ArrayList<CityZone>();
     }
 
     public String get_cityName() {
@@ -22,6 +30,7 @@ public class City {
 
 
     public void set_cityZones(List<CityZone> _cityCityZones) {
+        this._cityZones = _cityCityZones;
     }
 
     public Double get_annualGrowth() {

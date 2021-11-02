@@ -8,6 +8,36 @@ public class User {
     private CompartimentType _chosenCompartiment;
     private CityZone _chosenCityZone;
 
+    public Double get_targetAnnualGrowth() {
+        return _targetAnnualGrowth;
+    }
+
+    public void set_targetAnnualGrowth(Double _targetAnnualGrowth) {
+        this._targetAnnualGrowth = _targetAnnualGrowth;
+    }
+
+    private Double _targetAnnualGrowth;
+
+    public PaymentType get_chosenPaymentType() {
+        return _chosenPaymentType;
+    }
+
+    public void set_chosenPaymentType(PaymentType _chosenPaymentType) {
+        this._chosenPaymentType = _chosenPaymentType;
+    }
+
+    private PaymentType _chosenPaymentType;
+
+    public ApartamentType get_chosenApartamentType() {
+        return _chosenApartamentType;
+    }
+
+    public void set_chosenApartamentType(ApartamentType _chosenApartamentType) {
+        this._chosenApartamentType = _chosenApartamentType;
+    }
+
+    private ApartamentType _chosenApartamentType;
+
     public City get_chosenCity() {
         return _chosenCity;
     }

@@ -1,7 +1,12 @@
 import com.binod.DrollsKnowledgeBase.User
 import com.binod.DrollsKnowledgeBase.CompartimentType
 import com.binod.DrollsKnowledgeBase.Apartament
+import com.binod.DrollsKnowledgeBase.ApartamentType
+import com.binod.DrollsKnowledgeBase.PaymentType
+import com.binod.DrollsKnowledgeBase.CityZone
+import com.binod.DrollsKnowledgeBase.City
 
+//Rule #1
 rule "Buget too low for D Type Apartment"
 	when 
 		user: User( (_chosenCompartiment == CompartimentType.D) && (_maxBuget < _apartamentArea * _chosenCityZone.get_zoneMedianPricePerSquareMeters()))
@@ -9,6 +14,7 @@ rule "Buget too low for D Type Apartment"
 		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
 	end
 
+//Rule #2
 rule "Buget too low for SD Type Apartment"
 	when
 		user: User( (_chosenCompartiment == CompartimentType.SD) && (_maxBuget < _apartamentArea * _chosenCityZone.get_zoneMedianPricePerSquareMeters()))
@@ -16,6 +22,7 @@ rule "Buget too low for SD Type Apartment"
 		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
 	end
 
+//Rule #3
 rule "Buget too low for ND Type Apartment"
 	when
 		user: User( (_chosenCompartiment == CompartimentType.ND) && (_maxBuget < _apartamentArea * _chosenCityZone.get_zoneMedianPricePerSquareMeters()))
@@ -23,6 +30,7 @@ rule "Buget too low for ND Type Apartment"
 		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
 	end
 
+//Rule #4
 rule "Buget too low for OP Type Apartment"
 	when
 		user: User( (_chosenCompartiment == CompartimentType.OP) && (_maxBuget < _apartamentArea * _chosenCityZone.get_zoneMedianPricePerSquareMeters()))
@@ -30,11 +38,103 @@ rule "Buget too low for OP Type Apartment"
 		System.out.println("Buget is too low for D Type Apartament in Selected Zone: "+ user.get_chosenCityZone().get_zoneName());
 	end
 
-rule "Find cheapest apartament in Area for Specified Compartiment Type"
+
+//Rule #5
+rule "Discount of 5% for wanted apartment area bigger than 70mp"
     when
         user: User()
-        findedAp: Apartament(_compartimentType == user.get_chosenCompartiment()) from user.get_chosenCityZone().get_apartments()
-        minimumPriceAp: min(findedAp.get_price())
+        findedAp: Apartament(_area >= 70.0 && _apartmentType != ApartamentType.PENTHOUSE) from user.get_chosenCityZone().get_apartments()
     then
-        System.out.println("Best apartament in the budget : " + minimumPriceAp.toString());
+        System.out.println("Rule #5");
+        System.out.println("Apartment before discount : " + findedAp.toString());
+        findedAp.set_price(findedAp.get_price() - (findedAp.get_price()*0.05));
+        System.out.println("Apartament after discount : " + findedAp.toString());
+        System.out.println("End Rule #5 \n\n\n");
+    end
+
+//Rule #6
+rule "Discount of 10% for wanted apartment penthaus type"
+    when
+        user: User()
+        findedAp: Apartament(_apartmentType == ApartamentType.PENTHOUSE) from user.get_chosenCityZone().get_apartments()
+    then
+        System.out.println("Apartment before discount : " + findedAp.toString());
+        findedAp.set_price(findedAp.get_price() - (findedAp.get_price()*0.1));
+        System.out.println("Apartament after discount : " + findedAp.toString());
+    end
+
+//Rule #7
+rule "If payment type is cash discount of 15% will be applied to apartment type"
+    when
+        user: User(_chosenPaymentType == PaymentType.CASH)
+        findedAp: Apartament() from user.get_chosenCityZone().get_apartments()
+    then
+        System.out.println("Apartment before cash discount : " + findedAp.toString());
+        findedAp.set_price(findedAp.get_price() - (findedAp.get_price()*0.1));
+        System.out.println("Apartament after cash discount : " + findedAp.toString());
+    end
+
+//Rule #8
+rule "Apartment is not finished 10% discount"
+    when
+        user: User()
+        findedAp: Apartament(_isFinished == false) from user.get_chosenCityZone().get_apartments()
+    then
+        System.out.println("Apartment before building discount : " + findedAp.toString());
+        findedAp.set_price(findedAp.get_price() - (findedAp.get_price()*0.1));
+        System.out.println("Apartament after building discount : " + findedAp.toString());
+    end
+
+//Rule #9"
+rule "Square Meter price after ten years in chosen zone"
+    when
+        user: User()
+    then
+        System.out.println("User selected zone in ten years will be : " + user.get_chosenCityZone().get_annualGrowthPercent() * 10);
+    end
+
+//Rule #10
+rule "Buget too low for area and chosen zone"
+    when
+        user: User(_maxBuget < _chosenCityZone._zoneMedianPricePerSquareMeters * _apartamentArea)
+    then
+        System.out.println("Buget too low for the specified zone");
+    end
+
+//Rule #11
+rule "User wants to know if annual growth is >= the one he setted"
+    when
+        user: User(_chosenCity.get_annualGrowth() < _targetAnnualGrowth)
+    then
+        System.out.println("Annual growth does not meet the required annual growth");
+    end
+
+//Rule #12
+rule "Show apartments that fit in budget"
+    when
+        user: User()
+        apartmentsFinded: Apartament(_price <= user.get_maxBuget()) from user._chosenCityZone.get_apartments()
+    then
+        System.out.println("Apartments that fit your budget : " + apartmentsFinded.toString());
+    end
+//Rule #13
+rule "If user pays with credit, interest rate is included in apartment price"
+    when
+        user: User(_chosenPaymentType == PaymentType.CREDIT)
+        apartment: Apartament() from user._chosenCityZone.get_apartments()
+    then
+        apartment.set_price(apartment.get_price() + apartment.get_price()* 0.1);
+        System.out.println("Apartment price with 10% interest: " + apartment.toString());
+    end
+
+//Rule #14
+rule "Chosen zone is too expensive, choose next zone and show apartments"
+    when
+        user: User(_maxBuget < _chosenCityZone._zoneMedianPricePerSquareMeters * _apartamentArea)
+    then
+        CityZone chosenCityZone = user.get_chosenCityZone();
+        System.out.println("Chosen city zone : " + chosenCityZone.toString());
+        int indexOfCityZone =  user.get_chosenCity().get_cityZones().indexOf(chosenCityZone);
+        user.set_chosenCityZone(user.get_chosenCity().get_cityZones().get(++indexOfCityZone));
+        System.out.println("New city zone : " + user.get_chosenCityZone().toString());
     end
